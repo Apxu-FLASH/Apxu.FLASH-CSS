@@ -1,0 +1,223 @@
+/* main.css BEGIN */
+
+/* Классы модального окна .modal-[номер] должны быть на теге <dialog> */
+
+/**
+ * .modal-1 BEGIN
+ */
+
+.modal-1 {
+  --offset-1-modal-1: calc(1.25 * var(--base-fs, 16px));
+
+  background: var(--color-main-2);
+  color: var(--color-main-1);
+  padding: var(--offset-1-modal-1);
+  position: fixed;
+  width: 600px;
+
+  :where(&) .h2 {
+    font-size: min(1.25 * var(--base-fs), 28px);
+    margin-block: var(--base-fs, 16px);
+
+    :where(&):first-child {
+      margin-top: 0;
+    }
+
+    :where(&):last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  :where(&) h2 {
+    font-size: min(1.25 * var(--base-fs), 28px);
+  }
+
+  :where(&) :is(h1, h2, p, ul, ol) {
+    margin-block: var(--base-fs);
+  }
+
+  :where(&) :is(ul, ol) {
+    padding-left: 1.2em;
+  }
+
+  :where(& ul) li {
+    list-style: disc;
+  }
+
+  :where(& ol) li {
+    list-style: decimal;
+  }
+
+  :where(&) > video:only-of-type {
+    margin: calc(-1 * var(--offset-1-modal-1));
+    max-width: calc(100% + 2 * var(--offset-1-modal-1));
+  }
+
+  :where(&) button {
+    background-color: #333;
+    border: none;
+    box-sizing: border-box;
+    color: var(--color-main-2);
+    cursor: pointer;
+    padding: 0.5em 1em;
+  }
+}
+
+:where(.modal-1_dark) button {
+  background-color: var(--color-main-2);
+  color: var(--color-main-1);
+}
+
+:where(.modal-1)::backdrop {
+  animation: fade-black-60 0.5s ease forwards;
+}
+
+.modal-1_dark {
+  background: var(--color-main-1);
+  color: var(--color-main-2);
+}
+
+:where(.modal-1_dark)::backdrop {
+  animation: fade-white-60 0.5s ease forwards;
+}
+
+.modal-1__close {
+  background: url('../img/close_black.svg') no-repeat center / contain;
+  cursor: pointer;
+  height: calc(1.5 * var(--offset-1-modal-1));
+  position: absolute;
+  right: calc(var(--offset-1-modal-1) / 2);
+  top: calc(var(--offset-1-modal-1) / 2);;
+  width: calc(1.5 * var(--offset-1-modal-1));
+  z-index: var(--z-index-default);
+}
+
+:where(.modal-1_dark) .modal-1__close {
+  background-image: url('../img/close_white.svg');
+}
+
+.modal-1__h {
+  font-size: min(1.5 * var(--base-fs), 32px);
+  margin-bottom: var(--offset-1-modal-1);
+  padding-inline: calc(1.5 * var(--offset-1-modal-1));;
+  text-align: center;
+}
+
+/**
+ * .modal-1 END
+ */
+
+/**
+ * .form-1 BEGIN
+ */
+
+.form-1 {
+  --offset-1-form-1: 20px;
+
+  container: form-1 / inline-size;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--offset-1-form-1);
+
+  :where(&) :is(input[type="text"], input[type="email"]) {
+    height: 40px;
+  }
+
+  :where(&) label {
+    display: inline-block;
+    margin-bottom: max(var(--offset-1-form-1) / 4, 5px);
+    margin-top: var(--offset-1-form-1);
+
+    &:first-of-type,
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  :where(&) textarea {
+    display: block;
+  }
+
+  :where(&) [type="submit"] {
+    background-color: var(--color-main-1);
+    border: none;
+    box-sizing: border-box;
+    color: var(--color-main-2);
+    cursor: pointer;
+    padding: 0.675em 1em;
+    white-space: nowrap;
+    width: 100%;
+
+    @container form-1 (inline-size >= 520px) {
+      max-width: 250px;
+    }
+  }
+
+  :where(&) > [type="submit"] {
+    margin-inline: auto;
+  }
+}
+
+:where(.form-1_dark) [type="submit"] {
+  background-color: var(--color-main-2);
+  color: var(--color-main-1);
+}
+
+.form-1__cols-2 {
+  display: grid;
+  gap: var(--offset-1-form-1);
+
+  /* 
+    Подобрал значение так, чтобы размер поля был не менее 250px:
+    520px = 250px * 2 + var(--offset-1-modal-1)
+  */
+  @container form-1 (inline-size >= 520px) {
+    grid-template-columns: 1fr 1fr; 
+  }
+}
+
+.form-1__cols-3 {
+  display: grid;
+  gap: var(--offset-1-form-1);
+
+  @container form-1 (inline-size >= 520px) {
+    grid-template-columns: 1fr 1fr; 
+  }
+
+  /*
+    790px = 250px * 3 + var(--offset-1-modal-1)
+    Легко вывести общую формулу
+  */
+  @container form-1 (inline-size >= 790px) {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+
+.form-1__h {
+  font-size: min(1.5 * var(--base-fs), 32px);
+  padding-inline: calc(1.5 * var(--offset-1-form-1));
+  text-align: center;
+}
+
+/**
+ * .form-1 END
+ */
+
+/**
+ * .overlay-1 BEGIN
+ */
+
+.overlay-1 {
+  --offset-overlay-1: var(--offset-base);
+
+  background-color: lightgreen;
+  border: 1px solid green;
+  border-radius: calc(var(--offset-overlay-1) / 2);
+  padding: var(--offset-overlay-1);
+}
+
+/**
+ * .overlay-1 END
+ */
+
+/* main.css END */
