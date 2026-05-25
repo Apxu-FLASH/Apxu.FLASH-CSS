@@ -1,0 +1,216 @@
+/* main.css BEGIN */
+
+/**
+ * .acc-1 BEGIN
+ */
+
+/* 
+  На самодостаточном блоке хорошо использовать свои переменную, а не переопределять базовую.
+  Имитация переопределения это задать свою переменную значением базовой.
+*/
+.acc-1 {
+  --offset-1-acc-1: var(--offset-base);
+
+  /* Для смены шрифта на произвольный достаточно поменять значение переменной */
+  --base-fs-acc-1: var(--base-fs);
+  --base-lh-acc-1: var(--base-lh);
+
+  display: flex;
+  flex-flow: column nowrap;
+  font-size: var(--base-fs-acc-1);
+  gap: var(--offset-1-acc-1);
+}
+
+/* Контейнерный запрос 1 с именем "acc". На один элемент один контейнер */
+.cq-1--acc {
+  container: acc / inline-size;
+}
+
+/* 
+  Лучше использовать контейнерный запрос, чем медиа запрос. 
+  Что если на сайте есть боковая колонка?
+  Что если блок FAQ располагается сразу в узкой области и широкой?
+  breakpoint-sm минус забивка контейнера по бокам: 992px - 2 * 20px
+  Можно выбрать и просто 992px. Важно иметь привязку к точкам медиа запросов.
+*/
+.acc-1_col-2 {
+  display: grid;
+  gap: var(--offset-1-acc-1, 0);
+
+  @container acc (inline-size >= 952px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.acc-1_col-3 {
+  display: grid;
+  gap: var(--offset-1-acc-1, 0);
+
+  @container acc (inline-size >= 952px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @container acc (inline-size >= 1160px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.acc-1_dark {
+  color: #DEDEDE;
+}
+
+.acc-1__col {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--offset-1-acc-1);
+}
+
+.acc-1__head {
+  background: #DEDEDE url('../img/acc-1-close_black.svg') no-repeat 
+    right var(--offset-1-acc-1) center / auto calc(2 * var(--offset-1-acc-1));
+  border: 1px solid #A5A5A5;
+  border-radius: calc(var(--offset-1-acc-1) / 2);
+  font: calc(var(--base-fs-acc-1) * 1.25) / var(--base-lh-acc-1) var(--font-main-serif);
+  padding: calc(var(--offset-1-acc-1) - 4px) var(--offset-1-acc-1);
+  padding-right: calc(4 * var(--offset-1-acc-1));
+}
+
+:where([open]) .acc-1__head {
+  background-image: url('../img/acc-1-open_black.svg');
+  border-bottom: none;
+  border-radius: calc(var(--offset-1-acc-1) / 2) calc(var(--offset-1-acc-1) / 2) 0 0;
+}
+
+/* 
+  Общий класс модификатора для всего блока, сохраняющий специфичность класса, а не на каждом элементе как в BEM. 
+  Пишем сразу после основного класса элемента, чтобы охватить взглядом модификации. 
+  Такой подход позволяет не засорять HTML классами модификаторов.
+*/
+:where(.acc-1_dark) .acc-1__head {
+  background-color: #333;
+  background-image: url('../img/acc-1-close_white.svg');
+}
+
+:where(.acc-1_dark [open]) .acc-1__head {
+  background-image: url('../img/acc-1-open_white.svg');
+}
+
+.acc-1__body {
+  background-color: white;
+  border: 1px solid #A5A5A5;
+  border-radius: 0 0 calc(var(--offset-1-acc-1) / 2) calc(var(--offset-1-acc-1) / 2);
+  border-top: none;
+  padding: var(--offset-1-acc-1);
+
+  :where(&) :is(h1, h2, p, ul, ol) {
+    margin-block: var(--offset-1-acc-1);
+  }
+
+  :where(&) :is(ul, ol) {
+    padding-left: 1.2em;
+  }
+
+  :where(& ul) li {
+    list-style: disc;
+  }
+
+  :where(& ol) li {
+    list-style: decimal;
+  }
+
+  /* Если нужно изменить размер шрифта на заголовке */
+
+  /* :where(&) h2 {
+    font-size: 24px;
+  } */
+}
+
+:where(.acc-1_dark) .acc-1__body {
+  background-color: black;
+}
+
+/**
+ * .acc-1 END
+ */
+
+/**
+ * .acc-2 BEGIN
+ */
+
+/* 2250 есть среднее арифметическое 15 и 30 умноженное на 100 */
+.acc-2 {
+  --offset-1-acc-2: clamp(
+    15px, 
+    calc(2250vw / 768), 
+    30px
+  );
+
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--offset-1-acc-2);
+}
+
+.acc-2_col-2 {
+  display: grid;
+  gap: var(--offset-1-acc-2, 0);
+
+  @container acc (inline-size >= 952px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.acc-2__col {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--offset-1-acc-2);
+}
+
+.acc-2__head {
+  background: lightgreen url('../img/acc-2-close_green.svg') no-repeat 
+    right var(--offset-1-acc-2) center / auto 2em;
+  font: calc(var(--base-fs) * 1.25) / var(--base-lh) var(--font-main-sans-serif);
+  padding: calc(var(--offset-1-acc-2) - 0.2em) var(--offset-1-acc-2);
+  padding-right: calc(4 * var(--offset-1-acc-2));
+}
+
+:where([open]) .acc-2__head {
+  background-image: url('../img/acc-2-open_green.svg');
+}
+
+.acc-2__body {
+  background-color: lightblue;
+
+  /* Коэффициент умножения меньше единицы, размер шрифта не должен быть меньше 12px */
+  font-size: max(12px, 0.875 * var(--base-fs));
+  padding: var(--offset-1-acc-2);
+
+  :where(&) :is(h1, h2, p, ul, ol) {
+    margin-block: 1em;
+  }
+
+  :where(&) li {
+    margin-block: 0.3em;
+  }
+
+  :where(&) :is(ul, ol) {
+    padding-left: 1.2em;
+  }
+
+  :where(& ul) li {
+    list-style: disc;
+  }
+
+  :where(& ol) li {
+    list-style: decimal;
+  }
+
+  :where(&) h2 {
+    font-size: calc(1.125 * var(--base-fs));
+  }
+}
+
+/**
+ * .acc-2 END
+ */
+
+/* main.css END */
