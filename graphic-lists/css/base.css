@@ -1,0 +1,445 @@
+/* base.css BEGIN */
+
+/*
+  Media Queries breakpoints:
+  xs: 576px
+  sm: 768px
+  md: 992px
+  lg: 1200px
+  xl: 1600px
+
+  1. breakpoints контейнерных запросов могут быть как произвольными, так и вручную связанными с медиа запросами 
+    под каждый отдельный проект. Например, медиа запрос 'sm' 768px. На <body> стоит забивка по бокам в 20px.
+    Внутри <body> контейнер с нужным блоком. Тогда контейнерный запрос 'sm' логично взять 768px - 40px = 728px.
+    Единицы измерения как 'vw', 'em' и другие переводятся в 'px' на нужном viewport.
+  2. Базовый размер шрифта задаётся в 'px', высота строки как коэффициент размера шрифта без единиц измерения.
+    Выбрал 16px потому что при делении на это число всегда получается конечная десятичная дробь.
+  3. Цвета задаю номерами '1' и '2' вместо 'dark' и 'light', чтобы можно было переопределить переменные 
+    на противоположные цвета, чтобы не нарушилась семантика.
+  4. Базовые смещения, например для элементов форм, удобно задавать в em. Сам размер шрифта не следует задавать в em.
+*/
+
+:root {
+  /* Colors */
+  --color-1: #212121;
+  --color-1-l-10: #3b3b3b;  /* lighten 10% */
+  --color-2: #dedede;
+  --color-2-d-10: #c5c5c5;  /* darken 10% */
+  --color-3: green;
+
+  /* Fonts */
+  --font-main-ss: 'Open Sans', 
+    system-ui, -apple-system, blinkmacsystemfont, 
+    'Segoe UI', roboto, helvetica, arial, sans-serif;
+  --font-main-s: 'Roboto Slab', 
+    georgia, 'Times New Roman', 
+    'Liberation Serif', times, serif;
+  --base-fs: 16px;
+  --base-fs-number: 16; /* Дублирует число размера шрифта без 'px' */
+  --base-lh: 1.5;
+
+  /* Offsets */
+  --offset-base: 20px;
+  --offset-base-number: 20; /* Дублирует число размера смещения без 'px' */
+  --offset-section: clamp(60px, 90 * 100vw / 768, 120px);
+  --offset-form: 2em;
+
+  /* Width */
+  --width-base: 1160px;
+
+  /* Time */
+  --tr-dur-base: 0.3s;
+
+  /* z-index */
+  --z-index-default: 1;
+}
+
+/*
+  Цвет и шрифт наследуются, задаём на <body>, для других блоков задаём такие свойства, если они отличаются.
+  Задавать сетку на <body> в большом проекте не рекомендуется, вдруг динамически в конец <body>
+  будут добавляться элементы с помощью JavaScript
+*/
+body {
+  color: var(--color-1);
+  font: var(--base-fs) / var(--base-lh) var(--font-main-ss);
+}
+
+/*
+  Убираем ненужные отступы сверху и снизу у первого и последнего дочернего элемента соответственно. 
+  Добавляем теги по необходимости. Классы .h1, .h2, .h3, .h4 имитируют соответствующие теги заголовков.
+*/
+:where(
+  .h1, .h2, .h3, .h4,
+  .h1-media, .h2-media, .h3-media, .h4-media,
+  h1, h2, h3, h4, p,
+  ul, ol, li, figure
+):first-child {
+  margin-top: 0;
+}
+
+:where(
+  .h1, .h2, .h3, .h4,
+  .h1-media, .h2-media, .h3-media, .h4-media,
+  h1, h2, h3, h4, p,
+  ul, ol, li, figure
+):last-child {
+  margin-bottom: 0;
+}
+
+:where(figure) {
+  margin: 0;
+}
+
+/*
+  Все списки по-умолчанию без маркеров и отступов. Маркеры и отступы обычно требуются разные в разных блоках,
+  задаём их на каждый блок через CSS вложенность в конце правила блока.
+*/
+:where(ul, ol, li) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+  Пусть цвет берётся от ближайшего родителя, подчёркивание задаём на блоках там где оно нужно. 
+*/
+:where(a) {
+  color: inherit;
+  text-decoration: none;
+}
+
+/*
+  Нельзя всё обернуть в :where(), потому что на <body> со специфичность 001 уже задан основной шрифт.
+  Нельзя всё обернуть в :is(), потому что специфичность заголовка блока, например :where(.block-n) h1,
+  равна 001, а :is() сделает специфичность класса 010, поэтому разделяем правило на 2 группы через запятую.
+*/
+:is(h1, h2, h3, h4),
+:is(.h1, .h2, .h3, .h4),
+:is(.h1-media, .h2-media, .h3-media, .h4-media) {
+  font-family: var(--font-main-s);
+  font-weight: 500;
+}
+
+/* 
+  Размеры заголовков по-умолчанию привязываем к базовому размеру шрифта. 
+  На каждый сайт могут быть разные коэффициенты, я сделал по-умолчанию.
+  Первый аргумент функции clamp() отвечает за размер на мобильных экранах (макет 360px).
+  Второй изменяемый аргумент отвечает за размер на планшетных экранах (макет 768px).
+  По-умолчанию он подобран таким образом, чтобы быть средним арифметическим двух соседних на 768px.
+  Третий аргумент функции clamp() отвечает за размер на десктопных экранах (макет 1920px).
+  Число 768 и коэффициенты можно выделить в отдельные переменные, но в целом тут это необязательно,
+  т.к. легко заменить в одном месте здесь.
+*/
+
+/* 
+  h1 меняется от 24px до 32px при базовом размере шрифта в 16px. Как вычисляется динамический аргумент:
+  Число 175 это среднее арифметическое коэффициентов 1.5 и 2 умноженное на 100. Добавляем единицы измерения 'vw'.
+  Число 768 это ширина экрана на которую нам нужно задать промежуточный размер шрифта.
+  Размер шрифта делится на 1px чтобы 'сократить' единицы измерения и получить число, чтобы итог был в 'vw'.
+*/
+h1, .h1-media {
+  font-size: clamp(
+    1.5 * var(--base-fs), 
+    175vw * var(--base-fs-number) / 768, 
+    2 * var(--base-fs)
+  );
+}
+
+/* 
+  Вариант ниже для скачкообразной смены размера шрифта.
+  На проект разумно настроить какой-то один вариант.
+*/
+
+/*
+.h1-media {
+  font-size: calc(1.5 * var(--base-fs));
+
+  @media (min-width: 768px) {
+    font-size: calc(1.75 * var(--base-fs));
+  }
+
+  @media (min-width: 1200px) {
+    font-size: calc(2 * var(--base-fs));
+  }
+}
+*/
+
+/* 
+  Имя контейнера h используется в базовом css файле, поэтому если будет 
+  конфликт имён, то в других файлах в запросе использовать то же имя.
+*/
+.cq--h {
+  container: h / inline-size;
+}
+
+/* То же самое что и .h1-media, но промежуточный размер берётся от ширины контейнера */
+.h1 {
+  @container h (inline-size >= 1px) {
+    font-size: clamp(
+      1.5 * var(--base-fs), 
+      175cqi * var(--base-fs-number) / (768 - 2 * var(--offset-base-number)), 
+      2 * var(--base-fs)
+    );
+  }
+}
+
+/* 
+  Вариант ниже для скачкообразной смены размера шрифта в зависимости от ширины контейнера.
+  На проект разумно настроить какой-то один вариант.
+*/
+
+/*
+.h1 {
+  font-size: calc(1.5 * var(--base-fs));
+
+  // (inline-size >= 768 - 2 * var(--offset-base))
+  @container h (inline-size >= 728px) {
+    font-size: calc(1.75 * var(--base-fs));
+  }
+
+  // (inline-size >= 1200 - 2 * var(--offset-base))
+  @container h (inline-size >= 1160px) {
+    font-size: calc(2 * var(--base-fs));
+  }
+}
+*/
+
+/* h2 меняется от 20px до 28px при базовом размере шрифта в 16px */
+h2, .h2-media {
+  font-size: clamp(
+    1.25 * var(--base-fs), 
+    150vw * var(--base-fs-number) / 768, 
+    1.75 * var(--base-fs)
+  );
+}
+
+.h2 {
+  @container h (inline-size >= 0) {
+    font-size: clamp(
+      1.25 * var(--base-fs), 
+      150cqi * var(--base-fs-number) / (768 - 2 * var(--offset-base-number)),
+      1.75 * var(--base-fs)
+    );
+  }
+}
+
+/* h3 меняется от 18px до 24px при базовом размере шрифта в 16px */
+h3, .h3-media {
+  font-size: clamp(
+    1.125 * var(--base-fs), 
+    131.25vw * var(--base-fs-number) / 768, 
+    1.5 * var(--base-fs)
+  );
+}
+
+.h3 {
+  @container h (inline-size >= 0) {
+    font-size: clamp(
+      1.125 * var(--base-fs), 
+      131.25cqi * var(--base-fs-number) / (768 - 2 * var(--offset-base-number)), 
+      1.5 * var(--base-fs)
+    );
+  }
+}
+
+/* h4 меняется от 16px до 20px при базовом размере шрифта в 16px */
+h4, .h4-media {
+  font-size: clamp(
+    1 * var(--base-fs), 
+    112.5vw * var(--base-fs-number) / 768, 
+    1.25 * var(--base-fs)
+  );
+}
+
+.h4 {
+  @container h (inline-size >= 0) {
+    font-size: clamp(
+      1 * var(--base-fs), 
+      112.5cqi * var(--base-fs-number) / (768 - 2 * var(--offset-base-number)), 
+      1.25 * var(--base-fs)
+    );
+  }
+}
+
+/* Для классов заголовков дублирую браузерные отступы по-умолчанию со специфичностью 0 */
+:where(.h1, .h1-media) {
+  margin: 0.67em 0;
+}
+
+:where(.h2, .h2-media) {
+  margin: 0.83em 0;
+}
+
+:where(.h3, .h3-media) {
+  margin: 1em 0;
+}
+
+:where(.h4, .h4-media) {
+  margin: 1.33em 0;
+}
+
+/* Убираем маркер у тега аккордеона */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::marker {
+  content: none;
+}
+
+summary {
+  cursor: pointer;
+}
+
+/* Базовая адаптация изображений и видео */
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+video {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+/* Небольшие изменения для нативного модального окна */
+dialog {
+  background: none;
+  border: none;
+  box-sizing: border-box;
+  max-width: calc(100% - 2 * var(--offset-base));
+  padding: 0;
+  position: relative;
+  scrollbar-width: thin;
+}
+
+:where(dialog):focus-visible {
+  outline: 1px solid;
+}
+
+/* Базовая стилизация таблиц */
+:where(table) {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+:where(td, th) {
+  border: 1px solid;
+  padding: 0.625em 0.75em;
+}
+
+/* Стилизация элементов форм по-умолчанию под конкретный сайт */
+:where(:focus-visible) {
+  outline: 1px solid;
+}
+
+:where(
+  input[type="text"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="search"],
+  input[type="url"],
+  input[type="date"]
+) {
+  border: 1px solid var(--color-1);
+  box-sizing: border-box;
+  caret-color: var(--color-1);
+  height: var(--offset-form);
+  max-width: 100%;
+  padding: 0 calc(var(--offset-form) / 3.2);
+}
+
+:where(textarea) {
+  box-sizing: border-box;
+  caret-color: var(--color-1);
+  max-width: 100%;
+  min-height: 100px;
+  min-width: 100%;
+  padding: calc(var(--offset-form) / 3.2);
+}
+
+:where(select) {
+  height: var(--offset-form);
+  padding: 0 calc(var(--offset-form) / 3.2);
+}
+
+:where(
+  button,
+  [type="submit"],
+  [type="reset"],
+  [type="button"]
+) {
+  background-color: var(--color-2);
+  border: 1px solid var(--color-1);
+  cursor: pointer;
+
+  /* Переопределение значение в файле normalize.css */
+  line-height: var(--base-lh);
+  min-height: var(--offset-form);
+  padding: calc(var(--offset-form) / 10) calc(var(--offset-form) / 2);
+  transition: background-color var(--tr-dur-base);
+
+  @media (hover) {
+    &:hover {
+      background-color: var(--color-2-d-10);
+    }
+  }
+}
+
+/* 
+  Стилизация по-умолчанию чекбоксов и радиокнопок.
+  Чекбокс (или радиокнопка) связывается с меткой с помощью атрибутов 'id' и 'for' 
+  и располагается прямо перед меткой:
+
+  <input id="radio-1" type="radio" name="radio-1" value="value-radio-1" checked>
+  <label for="radio-1">Текст метки радиокнопки</label>
+
+  <input id="checkbox-1" type="checkbox" name="checkbox-section1[]" value="value-checkbox-1">
+  <label for="checkbox-1">Текст метки чекбокса</label>
+
+  Можно поменять реализацию по-умолчанию, например, чтобы чекбокс был сразу после метки.
+*/
+:where(input[type="radio"]:has(+label), input[type="checkbox"]:has(+label)) {
+  display: none;
+}
+
+:where(input[type="radio"], input[type="checkbox"]) + label {
+  display: inline-block;
+  padding-left: calc(0.625 * var(--offset-form));
+  position: relative;
+}
+
+:where(input[type="radio"], input[type="checkbox"]) + :where(label)::before {
+  background-color: var(--color-2);
+  background-position: center;
+  background-size: contain;
+  content: '';
+  display: inline-block;
+  height: calc(var(--offset-form) / 2);
+  left: 0;
+  position: absolute;
+
+  /* Делаем смещение на одном уровне при любом размере шрифта и высоты строки */
+  top: calc(var(--base-fs) * var(--base-lh) / 2 - var(--offset-form) / 4);
+  width: calc(var(--offset-form) / 2);
+}
+
+:where(input[type="radio"] + label)::before {
+  border-radius: 50%;
+}
+
+/* Цвет иконки при необходимости меняется в .svg файле */
+:where(input[type="radio"]:checked + label)::before {
+  background-image: url('icons/radio_dark.svg');
+}
+
+
+:where(input[type="checkbox"]:checked + label)::before {
+  background-image: url('icons/check_dark.svg');
+}
+
+/* Стилизация файлового поля в связке с JavaScript, при необходимости CSS добавляем сюда */
+
+/* base.css END */
