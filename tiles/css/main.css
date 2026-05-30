@@ -1,0 +1,243 @@
+/* main.css BEGIN */
+
+/**
+ * .main BEGIN
+ */
+
+.main {
+  --offset-main: calc(1.25 * var(--base-fs));
+
+  :where(&) :is(ul, ol, p) {
+    margin-bottom: var(--offset-main);
+    margin-top: 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  :where(&) hr {
+    background: black;
+    border: none;
+    display: block;
+    height: 1px;
+    margin-bottom: var(--offset-main);
+    margin-top: 0;
+    width: 100%;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  :where(& .tabs-1) {
+    margin-bottom: var(--offset-main);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/**
+ * .main END
+ */
+
+/**
+ * .tile-1 BEGIN
+ */
+
+.cq--tile-1 {
+  container: tile-1 / inline-size;
+}
+
+.tile-1 {
+  --offset-tile-1: 20px;
+  --col-min-width: 300px;
+  --col-var-width: 1fr;
+
+  container: tile-1 / inline-size;
+  display: grid;
+  gap: var(--offset-tile-1);
+  grid-template-columns: repeat(auto-fill, minmax(var(--col-min-width), var(--col-var-width)));
+
+  /* 300px соответствует минимальной ширине колонок */
+  @container tile-1 (inline-size < 300px) {
+    grid-template-columns: 100%;
+  }
+
+  /* Если пересечение имён контейнеров, то дублируем */
+  
+  /* 300px соответствует минимальной ширине колонок */
+  @container layout-250 (inline-size < 300px) {
+    grid-template-columns: 100%;
+  }
+
+  :where(&) p {
+    margin: 0;
+  }
+
+  :where(&) ul {
+    padding-left: 1.2em;
+  }
+
+  :where(& ul) li {
+    list-style: disc;
+  }
+}
+
+.tile-1__item-hover {
+  background-color: lightblue;
+  box-sizing: border-box;
+  display: none;
+  flex-flow: column nowrap;
+  gap: calc(var(--offset-tile-1) / 2);
+  left: 0;
+  padding: var(--offset-tile-1);
+  position: absolute;
+  top: 0;
+  width: calc(100% + 2 * var(--offset-tile-1));
+}
+
+.tile-1__item {
+  background-color: lightblue;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: calc(var(--offset-tile-1) / 2);
+  padding: var(--offset-tile-1);
+  position: relative;
+
+  /* 'z-index' для наведения, чтобы не было перекрытия */
+  @media (hover) {
+    :where(&:hover):not(:has(.tile-1__item-hover)) {
+      border-radius: calc(var(--offset-tile-1) / 2);
+      box-shadow: 0 0 calc(var(--offset-tile-1) / 2) black;
+      margin: calc(-1 * var(--offset-tile-1));
+      padding: calc(2 * var(--offset-tile-1));
+      z-index: var(--z-index-default);
+    }
+
+    :where(&:hover) .tile-1__item-hover {
+      border-radius: calc(var(--offset-tile-1) / 2);
+      box-shadow: 0 0 calc(var(--offset-tile-1) / 2) black;
+      display: flex;
+      margin: calc(-1 * var(--offset-tile-1));
+      padding: calc(2 * var(--offset-tile-1));
+      z-index: var(--z-index-default);
+    }
+  }
+}
+
+.tile-1__text-hover {
+  :where(&) p {
+    margin-bottom: calc(var(--offset-tile-1) / 2);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/* 
+  Модификации элементов в 2 колонки должны действовать только, если 2 колонки умещаются.
+  Минимальная ширина одной колонки 300px, отступ между ними 20px, значит берём минимальную
+  ширину контейнера в 620px
+*/
+@container tile-1 (inline-size >= 620px) {
+  .tile-1__item_col-2 {
+    grid-column: span 2;
+  }
+}
+
+.tile-1__item_row-2 {
+  grid-row: span 2;
+}
+
+.tile-1__item_first {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+@container layout-250 (inline-size >= 620px) {
+  .tile-1__item_inside {
+    margin: 20px;
+
+    @media (hover) {
+      :where(&:hover):not(:has(.tile-1__item-hover)),
+      :where(&:hover) .tile-1__item-hover {
+        margin: 0;
+      }
+    }
+  }
+}
+
+/* Чтобы подействовали свойства 'object-' надо задать размеры */
+.tile-1__img {
+  display: block;
+  height: 200px;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+}
+
+.tile-1__h {
+  font-size: calc(1.25 * var(--base-fs));
+  font-weight: bold;
+}
+
+.tile-1__more {
+  margin-top: auto;
+}
+
+/**
+ * .tile-1 END
+ */
+
+/**
+ * .btn-N BEGIN
+ */
+
+.btn-1 {
+  background: darkblue;
+  color: white;
+  padding: calc(var(--offset-base) / 2) calc(0.75 * var(--offset-base));
+  text-align: center;
+  text-decoration: none;
+}
+
+/**
+ * .btn-N END
+ */
+
+/**
+ * .grid-main BEGIN
+ */
+
+.grid-main {
+  --offset-grid-main: 20px;
+
+  display: grid;
+  gap: var(--offset-grid-main);
+
+  @media (min-width: 768px) {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+.grid-main__aside {
+  background-color: lightpink;
+  padding: var(--offset-grid-main);
+}
+
+.grid-main__main {
+  background-color: lightcyan;
+  padding: var(--offset-grid-main);
+}
+
+/**
+ * .grid-main END
+ */
+
+/* main.css END */
