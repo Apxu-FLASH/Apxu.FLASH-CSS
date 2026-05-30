@@ -1,0 +1,432 @@
+/* groups.css BEGIN */
+
+/**
+ * .layout-223 BEGIN
+ */
+
+/*
+  Блок общего назначения, чтобы делить любые дочерние элементы на колонки.
+  Общая формула для inline-size контейнернего запроса:
+  N * MinWidth + (N - 1) * OffsetBase
+  N -- это количество колонок
+  MinWidth -- минимальная ширина одной колонки, которая в суффиксе названия блока.
+  OffsetBase -- отступ между колонками
+
+  Для других точек контейнерных запросов создаётся другой блок, 
+  например '.layout-500' для минимальной ширины 500px.
+*/
+
+.layout-223 {
+  --offset-layout-223: var(--offset-base);
+
+  container: layout-223 / inline-size;
+}
+
+.layout-223__cols-2 {
+  display: grid;
+  gap: var(--offset-layout-223);
+
+  @container layout-223 (inline-size >= 470px) {
+    grid-template-columns: 1fr 1fr; 
+  }
+}
+
+.layout-223__cols-3 {
+  display: grid;
+  gap: var(--offset-layout-223);
+
+  @container layout-223 (inline-size >= 470px) {
+    grid-template-columns: 1fr 1fr; 
+  }
+
+  @container layout-223 (inline-size >= 717px) {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+
+.layout-223__cols-4 {
+  display: grid;
+  gap: var(--offset-layout-223);
+
+  @container layout-223 (inline-size >= 470px) {
+    grid-template-columns: 1fr 1fr; 
+  }
+
+  @container layout-223 (inline-size >= 717px) {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+
+  @container layout-223 (inline-size >= 964px) {
+    grid-template-columns: repeat(4, 1fr); 
+  }
+}
+
+/**
+ * .layout-223 END
+ */
+
+/**
+ * .layout-350 BEGIN
+ */
+
+.layout-350 {
+  --offset-layout-350: var(--offset-base);
+
+  container: layout-350 / inline-size;
+}
+
+.layout-350__cols-2 {
+  display: grid;
+  gap: var(--offset-layout-350);
+
+  @container layout-350 (inline-size >= 724px) {
+    grid-template-columns: 1fr 1fr; 
+  }
+}
+
+.layout-350__cols-3 {
+  display: grid;
+  gap: var(--offset-layout-350);
+
+  @container layout-350 (inline-size >= 724px) {
+    grid-template-columns: 1fr 1fr; 
+  }
+
+  @container layout-350 (inline-size >= 1098px) {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+
+.layout-350__cols-4 {
+  display: grid;
+  gap: var(--offset-layout-350);
+
+  @container layout-350 (inline-size >= 724px) {
+    grid-template-columns: 1fr 1fr; 
+  }
+
+  @container layout-350 (inline-size >= 1098px) {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+
+  @container layout-350 (inline-size >= 1472px) {
+    grid-template-columns: repeat(4, 1fr); 
+  }
+}
+
+/**
+ * .layout-350 END
+ */
+
+/**
+ * .container BEGIN
+ */
+
+.cq--container {
+  container: container / inline-size;
+}
+
+.container {
+  padding-inline: var(--offset-base);
+
+  /* (inline-size >= var(--width-base) + 2 * var(--offset-base)) */
+  @container container (inline-size >= 1178px) {
+    padding-inline: calc(50% - var(--width-base) / 2);
+  }
+}
+
+/**
+ * .container END
+ */
+
+/**
+ * .container-media BEGIN
+ */
+
+.container-media {
+  padding-inline: var(--offset-base);
+
+  /* (min-width: var(--width-base) + 2 * var(--offset-base)) */
+  @media (min-width: 1178px) {
+    padding-inline: calc(50% - var(--width-base) / 2);
+  }
+}
+
+/**
+ * .container-media END
+ */
+
+/**
+ * .container-expand BEGIN
+ */
+
+.container-media-expand {
+  margin-inline: calc(-1 * var(--offset-base));
+  padding-inline: var(--offset-base);
+
+  /* (min-width: var(--width-base) + 2 * var(--offset-base)) */
+  @media (min-width: 1200px) {
+    margin-inline: calc(-50vw + calc(var(--width-base) / 2));
+    padding-inline: calc(50vw - calc(var(--width-base) / 2));
+  }
+}
+
+/**
+ * .container-expand END
+ */
+
+/**
+ * Section Common BEGIN
+ */
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.iframe-16-9 {
+  aspect-ratio: 16 / 9; /* 1.77777... */
+  max-width: 100%;
+}
+
+.overflow-auto {
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+/**
+ * Section Common END
+ */
+
+/**
+ * Section Flex Grid BEGIN
+ */
+
+.flex-column {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.flex-column-gap-1ob {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--offset-base);
+}
+
+.flex-row-gap-20px-60px {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 20px 60px;
+}
+
+/**
+ * Section Flex Grid END
+ */
+
+/**
+ * Section Flex Grid Alignment BEGIN
+ */
+
+.ai-center {
+  align-items: center;
+}
+
+.ai-start {
+  align-items: start;
+}
+
+.as-stretch {
+  align-self: stretch;
+}
+
+.flex-center-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+/**
+ * Section Flex Grid Alignment END
+ */
+
+/**
+ * Section Block Model BEGIN
+ */
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mt-24px {
+  margin-top: 24px;
+}
+
+.mb-40px {
+  margin-bottom: 40px;
+}
+
+.mb-1dot2em {
+  margin-bottom: 1.2em;
+}
+
+.mb-2em {
+  margin-bottom: 2em;
+}
+
+.mb-1ob {
+  margin-bottom: var(--offset-base);
+}
+
+.p-10px {
+  padding: 10px;
+}
+
+.p-20px {
+  padding: 20px;
+}
+
+.pb-0dot5em {
+  padding-bottom: 0.5em;
+}
+
+.pb-1em {
+  padding-bottom: 1em;
+}
+
+/* 'ob' выдуманные единицы измерения. 1ob -- 1 единица базового смещения в переменной '--offset-base' на :root */
+.p-1ob {
+  padding: var(--offset-base);
+}
+
+/* 'os' выдуманные единицы измерения. 1os -- 1 единица смещения в переменной '--offset-section' на :root */
+.py-1os {
+  padding-block: var(--offset-section);
+}
+
+.py-0dot6os {
+  padding-block: calc(0.6 * var(--offset-section));
+}
+
+/* 2os / 3 */
+.py-2os-to-3 {
+  padding-block: calc(2 / 3 * var(--offset-section));
+}
+
+.mt-20px {
+  margin-top: 20px;
+}
+
+/* Безразмерная величина означает любой отступ, это просто номер */
+.py-1 {
+  padding-block: 38px;
+
+  /* Контейнер с именем 'banners' уже есть в файле 'main.css', по необходимости можно сменить имя */
+  @container banners (inline-size >= 944px) {
+    padding-block: 76px;
+  }
+}
+
+/**
+ * Section Block Model END
+ */
+
+/**
+ * Section Width Height BEGIN
+ */
+
+.col-1-to-1 {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.max-w-450px {
+  max-width: 450px;
+}
+
+.max-w-500px {
+  max-width: 500px;
+}
+
+.max-w-800px {
+  max-width: 800px;
+}
+
+.min-h-1200px {
+  min-height: 1200px;
+}
+
+/**
+ * Section Width Height END
+ */
+
+/**
+ * Section Colors BEGIN
+ */
+
+.color-1 {
+  color: var(--color-1);
+}
+
+.color-2 {
+  color: var(--color-2);
+}
+
+.color-3 {
+  color: var(--color-3);
+}
+
+.bg-color-1 {
+  background-color: var(--color-1);
+}
+
+.bg-color-2 {
+  background-color: var(--color-2);
+}
+
+.bg-color-3 {
+  background-color: var(--color-3);
+}
+
+.bg-color-light-gray {
+  background-color: #F7F9FA;
+}
+
+.green {
+  color: green;
+}
+
+.bg-green {
+  background-color: green;
+}
+
+/**
+ * Section Colors END
+ */
+
+/**
+ * Section Gaps BEGIN
+ */
+
+:where(
+  .layout-223__cols-3, 
+  .layout-350__cols-3
+).gap-4-to-3 {
+  gap: calc((4 / 3) * var(--offset-base));
+}
+
+:where(.layout-223__cols-4).c-gap-64px {
+  column-gap: 64px;
+}
+
+/**
+ * Section Gaps END
+ */
+
+/* groups.css END */
