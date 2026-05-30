@@ -1,0 +1,104 @@
+/* main.css BEGIN */
+
+/**
+ * .text-col-2 BEGIN
+ */
+
+.cq--text-col-2 {
+  container: text-col-2 / inline-size;
+}
+
+.text-col-2 {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: calc(2 * var(--offset-base));
+  justify-content: space-between;
+
+  /* 992px - 2 * var(--offset-base) */
+  @container text-col-2 (inline-size >= 952px) {
+    flex-flow: row wrap;
+  }
+}
+
+.text-col-2_row-reverse {
+  /* 992px - 2 * var(--offset-base) */
+  @container text-col-2 (inline-size >= 952px) {
+    flex-flow: row-reverse wrap;
+  }
+}
+
+/* Любые ограничения ширины колонок задаются через классы вроде '.max-w-500px' */
+.text-col-2__col {
+  flex: 1 0 auto;
+  width: 100%;
+
+  /* 992px - 2 * var(--offset-base) */
+  @container text-col-2 (inline-size >= 952px) {
+    flex: 1 0 auto;
+    width: calc(50% - var(--offset-base));
+  }
+}
+
+.text-col-2__img {
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+/**
+ * .text-col-2 END
+ */
+
+/**
+ * .menu-1 BEGIN
+ */
+
+.menu-1 {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1em;
+
+  :where(&) > li {
+    padding-left: 1em;
+    position: relative;
+
+    :where(&)::before {
+      background: var(--color-1);
+      content: '';
+      height: 4px;
+      left: 0;
+      position: absolute;
+
+      /* 
+        Половина произведения размера шрифта на высоту строки минус половина высоты элемента 
+        даёт центровку в одной строке при любом размере шрифта и высоты строки
+      */
+      top: calc(var(--base-fs) * var(--base-lh) / 2 - 2px);
+      width: 4px;
+    }
+
+    /* Одновременно две вариации в зависимости от наличия ссылки в элементе списка */
+    :where(&:has(>a))::before {
+      background: var(--color-3);
+    }
+  }
+
+  /* Любой цвет на ссылках */
+  :where(&) a {
+    color: var(--color-3);
+  }
+
+  @media (hover) {
+    :where(& a):hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/**
+ * .menu-1 END
+ */
+
+/* main.css END */
