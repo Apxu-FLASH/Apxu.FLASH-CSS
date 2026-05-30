@@ -51,14 +51,17 @@
 ```css
 :root {
   /* Colors */
-  --color-main-1: #212121;
-  --color-main-2: #dedede;
+  --color-1: #212121;
+  --color-1-l-10: #3b3b3b;  /* lighten 10% */
+  --color-2: #dedede;
+  --color-2-d-10: #c5c5c5;  /* darken 10% */
+  --color-3: green;
 
   /* Fonts */
-  --font-main-sans-serif: 'Open Sans', 
+  --font-main-ss: 'Open Sans', 
     system-ui, -apple-system, blinkmacsystemfont, 
     'Segoe UI', roboto, helvetica, arial, sans-serif;
-  --font-main-serif: 'Roboto Slab', 
+  --font-main-s: 'Roboto Slab', 
     georgia, 'Times New Roman', 
     'Liberation Serif', times, serif;
   --base-fs: 16px;
@@ -67,6 +70,7 @@
 
   /* Offsets */
   --offset-base: 20px;
+  --offset-base-number: 20; /* Дублирует число размера смещения без 'px' */
   --offset-section: clamp(60px, 90 * 100vw / 768, 120px);
   --offset-form: 2em;
 
@@ -210,7 +214,7 @@
  * .container BEGIN
  */
 
-.cq-1--container {
+.cq--container {
   container: container / inline-size;
 }
 
@@ -227,8 +231,7 @@
  * .container END
  */
 ```
-Если нет надобности в контейнерных запросах, то можно реализовать аналогичный дополнительный блок **.container-media** через медиа запросы.
-В нём должна использоваться переменная базовой ширины и базового отступа.
+Также есть блоки **.container-media** и **.container-media-expand**. Для последнего на **body** следует задать свойство **overflow: hidden visible**. Пример их использования в папке **text-col-2**.
 ### animation.css и другие
 Как следует из названия в файле **animation.css** размещаются правила CSS анимации **@keyframes** с краткими комментариями. По необходимости можно создать другие .css файлы с общим смыслом или разделить файл **main.css** на несколько при большом количестве блоков или компонентной реализации сайта.
 ## Шаблонные блоки
@@ -247,6 +250,7 @@
 * Форма подписки
 * Различные кнопки
 * Простое меню
+* Контент в двух колонках с простым меню в контейнерах
 
 Новичкам и пользующимся старыми методами вёрстки для полноты понимания полезно полностью изучить учебные курсы или хотя бы отдельные главы.
 
