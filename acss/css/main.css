@@ -1,0 +1,130 @@
+/* main.css BEGIN */
+
+/**
+ * .grid-main BEGIN
+ */
+
+.grid-main {
+  --offset-grid-main: var(--offset-base);
+
+  display: grid;
+  gap: var(--offset-grid-main);
+
+  @media (min-width: 768px) {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+.grid-main__aside {
+  background-color: lightpink;
+  padding: var(--offset-grid-main);
+}
+
+.grid-main__main {
+  background-color: lightcyan;
+  padding: var(--offset-grid-main);
+}
+
+/**
+ * .grid-main END
+ */
+
+/**
+ * .main BEGIN
+ */
+
+.main {
+  :where(&) :is(ul, ol, p, table, form) {
+    margin-block: 1.25em;
+    
+    :where(&):first-child {
+    	margin-top: 0;
+    }
+
+    :where(&):last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  :where(& :is(ul, ol)) {
+  	padding-left: 1.15em;
+  }
+
+  :where(& ul) li {
+  	list-style: disc;
+  }
+
+  :where(& ol) li {
+  	list-style: decimal;
+  }
+
+  :where(&) a {
+    border-bottom: 1px solid;
+    display: inline-flex;
+
+    /* Чтобы строка не увеличилась в высоте из-за ссылок в тексте */
+    line-height: calc(var(--base-lh) - 0.2);
+    padding-bottom: 1px;
+    transition: border-color var(--tr-dur-base);
+
+    @media (hover) {
+      :where(&):hover {
+        border-color: transparent;
+      }
+    }
+  }
+}
+
+/**
+ * .main END
+ */
+
+/**
+ * .aside BEGIN
+ */
+
+.aside {
+  :where(&) :is(ul, ol, p, table, form) {
+    margin-block: 1.25em;
+    
+    :where(&):first-child {
+    	margin-top: 0;
+    }
+
+    :where(&):last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  :where(& :is(ul, ol)) {
+  	padding-left: 1.15em;
+  }
+
+  :where(& ul) li {
+  	list-style: disc;
+  }
+
+  :where(& ol) li {
+  	list-style: decimal;
+  }
+
+  :where(&) a {
+    border-bottom: 1px solid;
+    display: inline-flex;
+    line-height: calc(var(--base-lh) - 0.2);
+    padding-bottom: 1px;
+    transition: border-color var(--tr-dur-base);
+
+    @media (hover) {
+      :where(&):hover {
+        border-color: transparent;
+      }
+    }
+  }
+}
+
+/**
+ * .aside END
+ */
+
+/* main.css END */
